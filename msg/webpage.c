@@ -17,8 +17,8 @@ char webpage[] = "HTTP/1.1 200 OK\r\n"
                  "<html><head><title>나의 웹 페이지</title>\r\n"
                  "<link rel=\"icon\" href=\"data:,\">\r\n"
                  "<style>body {background-color: #50bcdf }</style></head>\r\n"
-                 "<body><center><h1>안녕하세오 명달이에오</h1><br>\r\n"
-                 "<img src=\"dragon.jpg\"></center></body></html>\r\n";
+                 "<body><center><h1>안녕하세오 수진이에오</h1><br>\r\n"
+                 "<img src=\"msg.jpeg\"></center></body></html>\r\n";
 
 int main(int argc, char *argv[])
 {
@@ -79,10 +79,10 @@ int main(int argc, char *argv[])
         printf("%s\n", buf);
 
         // 요청이 이미지 파일인지 확인
-        if (strstr(buf, "GET /dragon.jpg") != NULL)
+        if (strstr(buf, "GET /msg.jpeg") != NULL)
         {
             // 이미지 파일 열고 읽기
-            fdimg = open("dragon.jpg", O_RDONLY);
+            fdimg = open("msg.jpeg", O_RDONLY);
             if (fdimg == -1)
             {
                 perror("open() 오류");
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
             // HTTP 응답 헤더 준비 및 전송
             sprintf(buf, "HTTP/1.1 200 OK\r\n"
                          "Server: Linux Web Server\r\n"
-                         "Content-Type: image/jpg\r\n"
+                         "Content-Type: image/jpeg\r\n"
                          "Content-Length: %ld\r\n\r\n", img_size);
             if (write(clnt_sock, buf, strlen(buf)) < 0)
             {
