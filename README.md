@@ -527,4 +527,52 @@ IoT 개발자 TCP/IP 학습 리포지토리
         - 세마포어
             - 세마포어는 뮤택스와 매우 유사하다
 
-        
+
+# 라즈베리 파이
+## 1일차 (2024-06-20)
+- 라즈베리 파이 핀의 역할
+    - 1번, 17번 핀 : 3V
+    - 2번, 3번 핀 : 5V (VCC)
+    - 6번, 9번, 14번, 20번, 25번, 30번, 34번, 39번 핀 : 그라운드 (0V)
+
+    - 핀 번호와 물리적 번호가 다르니 잘못 연결하지 않게 주의할 것
+
+    - 전류 (I) : 전하의 흐름, 단위 시간 동안에 흐른 전하의 양
+    - 전압 (V) : 전기장 안에서 전하가 갖는 전위의 차
+    - 저항 (R) : 전류가 흐르는 것을 방해하는 정도
+
+    - 옴의 법칙 : I = V/R 
+        - 두 지점 사이의 도체에 일정한 전위차가 존재 할 때, 도체의 저항의 크기와 전류의 크기는 반비례한다.
+
+    - 키르히호프
+        - 전류 법칙 (KCL) : 특정 노드 혹은 닫힌 영역에 들어오는 전류의 대수적 합은 0이다.
+        - 전압 법칙 (KVL) : 닫힌 경로 혹은 루프에서 모든 전압의 대수적 합은 0이다.
+
+    - GPIO 설정함수
+        - GPIO.setmode(GPIO.BOARD) - wpi
+        - GPIO.setmode(GPIO.BCM) - BCM
+        - GPIO.setup(channel, GPIO.mode)
+        - -channel: 핀번호, mode: IN/OUT
+        - GPIO.cleanup()
+    - GPIO 출력함수
+        - GPIO.output(channel, state)
+        - -channel: 핀번호, state: HIGH/LOW or 1/0 or True/False
+    - GPIO 입력함수
+        - GPIO.input(channel)
+        - -channel: 핀번호, 반환값: H/L or 1/0 or T/F
+    - 시간지연 함수
+        - time.sleep(secs)
+
+    - 풀업 저항
+        - input에 1이 들어간다
+            - 스위치를 눌렀을 때 0이 된다.
+            
+    ![입력이VCC에연결된경우](https://raw.githubusercontent.com/c9yu/basic-TCP-IP-2024/main/imgs/img002.jpg)
+
+
+    - 풀다운 저항
+        - input에 0이 들어간다
+            - 스위치를 눌렀을 때 1이 된다.
+            
+    ![입력이GND에연결된경우](https://raw.githubusercontent.com/c9yu/basic-TCP-IP-2024/main/imgs/img003.jpg)
+
