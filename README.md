@@ -706,3 +706,76 @@ if __name__ == "__main__":
     - 위 형태로 값을 넣어준다.
 
 ## 4일차 (2024-06-25)
+
+
+## 5일차 (2024-06-26)
+- 세븐 세그먼트 활용
+    - 1. 세그먼트 1의 자리(COM4)에서 0~9가 순차적으로 반복
+    ```c
+    #핵심 코드
+    try:
+        while True:
+            if GPIO.input(btn) == True:
+             i = 0
+            for i in range(6):
+                GPIO.output(leds[i], seg_patterns[count_1][i])
+            count_1 = count_1 + 1
+            print(count_1)
+            time.sleep(1)
+
+        if count_1 == 10:
+            count_1 = 0
+    ```
+    - 변수 count를 선언하여 해당 변수를 증가시켜줘 count의 증가에 따라 세그먼트에 출력되는 숫자가 증가하게 함
+
+    - 2. 세그먼트의 네자리 (COM1 ~ COM4)에 '1234'가 출력
+    ```c
+    #핵심 코드
+    def display_digit(com, digit):
+        for i in range(0, 4):
+            if i == com:
+                GPIO.output(digits[i], True)
+            else:
+                GPIO.output(digits[i], False)
+        for j in range(0, 7):
+            GPIO.output(segments[j], num[digit][j])
+
+    def display_number(numbers):
+        numbers_1 = numbers // 1000
+        numbers_2 = (numbers % 1000) // 100
+        numbers_3 = (numbers % 100) // 10
+        numbers_4 = numbers % 10
+        display_digit(0, numbers_1)
+        time.sleep(0.001)
+        display_digit(1, numbers_2)
+        time.sleep(0.001)
+        display_digit(2, numbers_3)
+        time.sleep(0.001)
+        display_digit(3, numbers_4)
+        time.sleep(0.001)
+
+    def main():
+        setup()
+        try:
+            while True:
+                display_number(1234) # 각 자리수에 출력할 숫자를 지정
+        except KeyboardInterrupt:
+            GPIO.cleanup()
+    ```
+    - 두 함수 'display_digit'과 'display_number'를 정의하여 사용한다. display_digit은 각 자리를 나타내는 역할을 수행, display_number는 각 자리의 값을 나타내는 역할을 수행한다.
+
+    - 3. 세그먼트의 네자리에 0000 ~ 9999가 1초 단위로 출력
+    ```c
+    try:
+        while True:
+            count = 0
+            for i in range(0, 9999):
+                start_time = time.time()
+                while time.time() - start_time < 1:
+                    display_number(i)
+                if i == 9999:
+                i = 0
+    ```
+    - 2번과 소스코드 자체에 큰 차이는 없으나 count라는 변수를 선언하여 count값이 증가함에 따라 count값을 세그먼트에서 출력하게끔 하였다.
+    - 방법 자체는 간단하나, time.time() 함수를 사용하지 않으면 1000, 100, 10의 자리의 값들이 매우 빠른속도로 넘어가 카운트의 기능 자체는 동작하지만 1의 자리만 육안으로 관찰되는 문제가 발생한다.
+    - 따라서 time.time()함수를 사용해 1초의 시간동안 네 자리의 값들 모두가 동일하게 반복되는 형태를 취하여 문제를 해결할 수 있었다.
